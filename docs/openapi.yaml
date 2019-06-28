@@ -1,0 +1,123 @@
+openapi: 3.0.1
+info:
+  title: DisPay
+  description: |2-
+     Discord Payment API developed by @GreatGodApollo and @averen
+  contact:
+    name: DisPay
+    email: contact@dispay.xyz
+  license:
+    name: GNU General Public License v3
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+  version: 0.0.1
+servers:
+  - url: 'https://dispay.xyz/api'
+security:
+  - ApiKeyAuth: []
+tags:
+  - name: Transactions
+    description: All endpoints relating to transactions
+    externalDocs:
+      description: Find out more!
+      url: 'https://dispay.xyz'
+  - name: Accounts
+    description: All endpoints relating to accounts
+    externalDocs:
+      description: Find out more!
+      url: 'https://dispay.xyz'
+paths:
+  /purchase:
+    post:
+      tags:
+        - Transactions
+      summary: Create a new Purchase
+      operationId: purchase
+      requestBody:
+        description: Purchase object to be verified
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: integer
+                  format: int64
+                  example: 233064645571772400
+                amount:
+                  type: integer
+                  format: int64
+                  example: 50
+                description:
+                  type: string
+                  example: Test Transaction
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  new_balance:
+                    type: integer
+                    format: int64
+                    example: 50
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+  '/accounts/{id}':
+    get:
+      tags:
+        - Accounts
+      summary: Find account by ID
+      description: Returns a single account
+      operationId: getAccount
+      parameters:
+        - name: id
+          in: path
+          description: ID of the account to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: integer
+                    format: int64
+                    example: 100
+                  id:
+                    type: integer
+                    format: int64
+                    example: 233064645571772400
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Account not found
+      security: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: Authorization
+      in: header
