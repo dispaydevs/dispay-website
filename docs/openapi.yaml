@@ -63,6 +63,20 @@ paths:
                     type: integer
                     format: int64
                     example: 50
+        '400':
+          description: |2- 
+            A Property of the Request was Invalid
+            
+            "Missing account",
+            "Missing amount",
+            "Missing description",
+            "Invalid account",
+            "Exceeds balance",
+            "Empty description"
+          content:
+            application/json:
+              example:
+                message: "Missing account"
         '401':
           description: Unauthorized
           content:
